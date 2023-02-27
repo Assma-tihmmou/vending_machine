@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class VendingMachineTest {
 
@@ -56,7 +57,7 @@ public class VendingMachineTest {
         assertEquals(Products.KITKAT,vendingMachine.dispenseProduct());
 
     }
-@Test
+    @Test
     public void givenRequest_whenSendRequest_thenGetChange() throws NotSufficientNumberOfCoinsException {
         vendingMachine= new VendingMachine();
         List<Coins> coins = new ArrayList<>();
@@ -66,9 +67,18 @@ public class VendingMachineTest {
         Request request = new Request("345",coins);
         vendingMachine.sendRequest(request);
         HashMap<Coins,Integer> coinsToChange=vendingMachine.getChange();
-        assertEquals(3,coinsToChange.get(Coins.FIVE_DIRHAMS) );
-
+        assertEquals(1,coinsToChange.get(Coins.FIVE_DIRHAMS) );
     }
+
+    @Test
+    public void givenRequestWithLessAmount_whenSendRequest_thenThrowException()throws NotSufficientNumberOfCoinsException{
+        List<Coins> coins = new ArrayList<>();
+        coins.add(Coins.ONE_DIRHAM);
+        Request request = new Request("456",coins);
+         assertThrows(NotSufficientNumberOfCoinsException.class,()->vendingMachine.sendRequest(request));
+    }
+
+
 
 
 

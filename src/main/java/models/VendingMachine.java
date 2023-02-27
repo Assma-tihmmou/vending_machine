@@ -67,9 +67,7 @@ public class VendingMachine {
         return selectProduct;
     }
     public HashMap<Coins,Integer> getChange(){
-        return
-            this.coinsToChange;}
-
+        return this.coinsToChange;}
 
 
     public void updateStock(Products product) {
@@ -81,7 +79,6 @@ public class VendingMachine {
         this.selectProduct=selectedProduct;
     }
 
-
     public void dispenseChange(HashMap<Coins, Integer> coinsToChange) {
         this.coinsToChange=coinsToChange;
     }
@@ -92,9 +89,9 @@ public class VendingMachine {
         });
     }
 
-    public VendingMachine resetMachine(){
-         return new VendingMachine();
+    public void resetMachine(){
+         this.productsWithStock.forEach(((key,value)->{value=0; }));
+         this.coinsWithStock.forEach((key,value)->{ value=0; });
     }
-
 
 }

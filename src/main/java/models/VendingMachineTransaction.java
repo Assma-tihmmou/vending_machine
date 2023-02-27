@@ -20,24 +20,28 @@ public class VendingMachineTransaction {
         if (!request.isHasCanceled()) {
             selectedProduct = getProduct(request.getIdProduct());
 
-           if (request.getAmount() >= selectedProduct.getPrice())
-                getChange(selectedProduct.getPrice(), request.getAmount());
-
-            vendingMachine.dispenseProduct(selectedProduct);
-            vendingMachine.updateStock(selectedProduct);
+           if (request.getAmount() >= selectedProduct.getPrice()) {
+               getChange(selectedProduct.getPrice(), request.getAmount());
+               vendingMachine.dispenseProduct(selectedProduct);
+               vendingMachine.updateStock(selectedProduct);
+           }else{
+               throw new NotSufficientNumberOfCoinsException("Add Coins ");
+           }
         }
     }
 
     private void getChange(double price, double amount) throws NotSufficientNumberOfCoinsException {
         double change = amount - price;
+
         HashMap<Coins, Integer> coinsToChange = new HashMap<>();
 
         for (Coins coins : Coins.values()) {
-            if (change > coins.getCoinsNumber() && vendingMachine.getCoinsWithStock().get(coins)>0  ) {
+            if (change >= coins.getCoinsNumber() && vendingMachine.getCoinsWithStock().get(coins)>0  ) {
                 coinsToChange.put(coins, (int) change /coins.getCoinsNumber());
                 change = change % coins.getCoinsNumber();
             }
         }
+
         if(machineHasCoins(coinsToChange)){
             vendingMachine.dispenseChange(coinsToChange);
             vendingMachine.updateCoinsStock(coinsToChange);

@@ -40,6 +40,7 @@ public class Request {
 
 
    public double getAmount() {
+      amount=0;
       for(Coins coin:requestCoins){
          amount+=coin.getCoinsNumber();
       }
